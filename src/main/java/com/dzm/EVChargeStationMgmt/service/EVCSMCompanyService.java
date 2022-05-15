@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class EVCSMCompanyService {
-
+    Map<Integer,List<Station>> map = new HashMap<>();
     @Autowired
     private EVCSMCompanyRepository companyRepository;
 
@@ -75,4 +75,30 @@ public class EVCSMCompanyService {
         }
        return map;
     }
+
+    public Map<Integer,List<Station>> getAllStationsV2(int companyId) {
+        Map<Integer,List<Station>> map = new HashMap<>();
+           Map<Integer,List<Station>> child = processRecursively(companyId,map);
+          // map.putAll(child);
+           return map;
+        }
+
+
+        public Map<Integer,List<Station>> processRecursively(int companyId,  Map<Integer,List<Station>> map){
+
+            if(companyId==0){
+                return map;
+            }
+            Company company = companyRepository.findById(companyId).get();
+            map.put(company.getId(),company.getStations());
+            List<Company> children=companyRepository.findChildren(companyId);
+            if(children.isEmpty()){
+                return map;
+            }else {
+                children.forEach(child->
+                        processRecursively(child.getId(),map));
+            }
+            return map;
+        }
+
 }

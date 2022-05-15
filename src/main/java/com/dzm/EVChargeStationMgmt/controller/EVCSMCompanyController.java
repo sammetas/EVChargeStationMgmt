@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ev/v1/")
@@ -64,6 +65,14 @@ public class EVCSMCompanyController {
     @GetMapping("/company/stations/{companyId}")
     public ResponseEntity<Map<Integer,List<Station>>> getAllStations(@PathVariable("companyId") int companyId){
     return   new ResponseEntity<>(evcsmCompanyService.getAllStations(companyId),HttpStatus.OK);
+    }
+
+    @GetMapping("/company/stationslist/{companyId}")
+    public ResponseEntity<List<Station>> getAllStationsList(@PathVariable("companyId") int companyId){
+        Map<Integer,List<Station>> mappedStations=evcsmCompanyService.getAllStationsV2(companyId);
+        List<Station> alStations = mappedStations.entrySet().stream().flatMap(e->e.getValue().stream()).collect(Collectors.toList());
+        return new ResponseEntity<>(alStations,HttpStatus.OK);
+
     }
 
 
