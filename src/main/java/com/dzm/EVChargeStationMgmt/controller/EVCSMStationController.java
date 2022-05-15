@@ -33,7 +33,7 @@ public class EVCSMStationController {
     @PutMapping("/station")
     public ResponseEntity<Company> updateCompany(@RequestBody Station station){
         if(validate(station)) {
-            boolean isUpdated=  evcsmStationService.processAndUpdateCompany(station);
+            boolean isUpdated=  evcsmStationService.processAndUpdateStation(station);
             if(isUpdated) {
                 return new ResponseEntity<>(HttpStatus.ACCEPTED);
             }else{
@@ -43,34 +43,25 @@ public class EVCSMStationController {
         }
         return new ResponseEntity<Company>(HttpStatus.BAD_REQUEST);
     }
-/*
-    @DeleteMapping("/company/{id}")
-    public ResponseEntity<Company> deleteCompany(@PathVariable("id") int companyId){
-        boolean isDeleted= evcsmStationService.processAndDelete(companyId);
+
+    @DeleteMapping("/station/{id}")
+    public ResponseEntity<Company> deleteCompany(@PathVariable("id") int stationId){
+        boolean isDeleted= evcsmStationService.processAndDelete(stationId);
         if(isDeleted){
             return new ResponseEntity<Company>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<Company>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/companies")
-    public ResponseEntity<List<Company>> getAllCompanies(){
-        List<Company> list= evcsmStationService.getAllCompanies();
+    @GetMapping("/stations")
+    public ResponseEntity<List<Station>> getAllStations(){
+        List<Station> list= evcsmStationService.getStations();
         if(!list.isEmpty()){
             return new ResponseEntity<>(list,HttpStatus.OK);
         }
-        return new ResponseEntity<List<Company>>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<List<Station>>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
     }
 
-
-    private boolean validate(Company company) {
-        if((company.getName().length()==0 || company.getName()==null) &&
-                company.getParentId()==0){
-            return false;
-        }
-        return true;
-    }
-*/
 
     private boolean validate(Station station) {
 

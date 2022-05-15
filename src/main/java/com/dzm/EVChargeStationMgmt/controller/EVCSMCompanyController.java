@@ -2,6 +2,7 @@ package com.dzm.EVChargeStationMgmt.controller;
 
 
 import com.dzm.EVChargeStationMgmt.model.Company;
+import com.dzm.EVChargeStationMgmt.model.Station;
 import com.dzm.EVChargeStationMgmt.service.EVCSMCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ev/v1/")
@@ -58,6 +60,12 @@ public class EVCSMCompanyController {
         }
         return new ResponseEntity<List<Company>>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/company/stations/{companyId}")
+    public ResponseEntity<Map<Integer,List<Station>>> getAllStations(@PathVariable("companyId") int companyId){
+    return   new ResponseEntity<>(evcsmCompanyService.getAllStations(companyId),HttpStatus.OK);
+    }
+
 
 
     private boolean validate(Company company) {

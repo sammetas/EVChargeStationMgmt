@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,4 +63,16 @@ public class EVCSMCompanyService {
     }
 
 
+    public Map<Integer,List<Station>> getAllStations(int companyId) {
+        Map<Integer,List<Station>> map = new HashMap<>();
+
+         int temp=companyId;
+
+        while(temp !=0){
+            Company company = companyRepository.findById(temp).get();
+            map.put(company.getId(),company.getStations());
+            temp = company.getParentId();
+        }
+       return map;
+    }
 }

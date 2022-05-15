@@ -4,8 +4,11 @@ import com.dzm.EVChargeStationMgmt.dao.EVCSMStationRepository;
 import com.dzm.EVChargeStationMgmt.model.Company;
 import com.dzm.EVChargeStationMgmt.model.Station;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +20,7 @@ public class EVCSMStationService {
         stationRepository.save(station);
     }
 
-    public boolean processAndUpdateCompany(Station station) {
+    public boolean processAndUpdateStation(Station station) {
 
         if(stationRepository.existsById(station.getId())){
                 Optional<Station> existing=stationRepository.findById(station.getId());
@@ -31,5 +34,20 @@ public class EVCSMStationService {
             }
             return false;
         }
+
+    public boolean processAndDelete(int stationId) {
+
+            if(stationRepository.existsById(stationId)) {
+                stationRepository.deleteById(stationId);
+                return true;
+            }
+            return false;
+
+    }
+
+    public List<Station> getStations() {
+       return  stationRepository.findAll(Sort.by(Sort.Direction.ASC,"name"));
+    }
+
 
 }

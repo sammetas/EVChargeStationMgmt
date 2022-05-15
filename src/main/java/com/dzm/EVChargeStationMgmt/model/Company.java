@@ -13,8 +13,7 @@ import java.util.List;
 @Getter
 @Table(name = "company")
 public class Company {
-  @Transient
-  List<Company> childrens;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private  int id;
@@ -22,4 +21,8 @@ public class Company {
   private  String name;
   @Column(name = "PARENT_COMPANY_ID")
   private int parentId;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "COMPANY_ID",referencedColumnName = "id")
+   private List<Station> stations;
 }
