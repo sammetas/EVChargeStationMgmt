@@ -19,11 +19,10 @@ public class ConsumerController {
     @Autowired
     private  ConsumerService service;
     @RequestMapping("/stations/{radius}/{latitude}/{longitude}")
-    public List<Station> getNearByStationsList(@PathVariable("radius") int radius,@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude){
-
+    public ResponseEntity<List<Station>> getNearByStationsList(@PathVariable("radius") int radius,@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude){
         Point p = new Point(latitude,longitude);
-         service.findStations(radius,latitude,p);
-        return  null;
+       return  new ResponseEntity<>(service.findStations(radius,p),HttpStatus.OK);
+
     }
 
 
