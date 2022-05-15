@@ -1,9 +1,11 @@
 package com.dzm.EVChargeStationMgmt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jdk.jfr.DataAmount;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -11,6 +13,8 @@ import javax.persistence.*;
 @Getter
 @Table(name = "company")
 public class Company {
+  @Transient
+  List<Company> childrens;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private  int id;

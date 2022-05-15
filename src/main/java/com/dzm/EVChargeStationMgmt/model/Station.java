@@ -15,9 +15,11 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
+    private String name;
+    @Column
     private double latitude ;
     @Column
     private double longitude;
-    @Column
-    private int company_id;
+    @Column(name = "company_id")
+    private int companyId;
 }

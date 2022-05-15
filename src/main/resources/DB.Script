@@ -1,0 +1,17 @@
+use projectb;
+
+create table COMPANY (
+     ID int AUTO_INCREMENT,
+    PARENT_COMPANY_ID int,
+    NAME VARCHAR(100),
+    primary key (id)
+    );
+create table STATION (
+    id int AUTO_INCREMENT,
+    NAME varchar(100) not null,
+    LATITUDE FLOAT(10,6) ,
+    LONGITUDE FLOAT(10,6),
+    COMPANY_ID int,
+    primary key (id),
+    foreign key (company_id) references company(id)
+   );
