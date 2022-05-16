@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class EVCSMCompanyService {
-    Map<Integer,List<Station>> map = new HashMap<>();
-    @Autowired
+       @Autowired
     private EVCSMCompanyRepository companyRepository;
 
     public void processAndSaveCompany(Company company) {

@@ -1,3 +1,4 @@
+--for mysql
 use projectb;
 
 create table COMPANY (
@@ -15,3 +16,31 @@ create table STATION (
     primary key (id),
     foreign key (company_id) references company(id)
    );
+
+   --for postgresql.
+CREATE USER postgresuser WITH PASSWORD 'P@ss4you!';
+
+DROP TABLE IF EXISTS COMPANY;
+DROP TABLE IF EXISTS STATION;
+
+
+    create table COMPANY (
+        ID SERIAL PRIMARY KEY,
+        PARENT_COMPANY_ID int,
+         NAME VARCHAR(100)
+    );
+
+	create table STATION (
+        id SERIAL primary key,
+        NAME varchar(100) not null,
+        LATITUDE NUMERIC(10,6)  ,
+        LONGITUDE NUMERIC(10,6) ,
+        COMPANY_ID int,
+        foreign key (company_id) references company(id)
+     );
+
+     GRANT ALL PRIVILEGES ON DATABASE postgres to postgresuser;
+      GRANT ALL PRIVILEGES ON TABLE COMPANY TO postgresuser;
+       GRANT ALL PRIVILEGES ON TABLE STATION TO postgresuser;
+         GRANT ALL PRIVILEGES ON SEQUENCE company_id_seq TO postgresuser;
+     	GRANT ALL PRIVILEGES ON SEQUENCE STATION_id_seq TO postgresuser;
