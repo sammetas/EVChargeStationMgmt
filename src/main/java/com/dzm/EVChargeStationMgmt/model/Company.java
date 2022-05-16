@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@ToString
 @Table(name = "company")
 public class Company {
 

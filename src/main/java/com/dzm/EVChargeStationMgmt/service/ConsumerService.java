@@ -8,6 +8,7 @@ import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -52,12 +53,16 @@ public class ConsumerService {
 
     public   List<Station> getAllStations(int companyId) {
         List<Station> stationList =null;
-        ResponseEntity<Station[]> response = restTemplate.getForEntity(url +"/" +companyId,Station[].class);
-        if(response.getStatusCode()== HttpStatus.OK){
-            Station[]  stations =  response.getBody();
-            stationList= Arrays.asList(stations);
-            System.out.println(stationList);
-       }
+        try {
+            ResponseEntity<Station[]> response = restTemplate.getForEntity(url + "/" + companyId, Station[].class);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                Station[] stations = response.getBody();
+                stationList = Arrays.asList(stations);
+                System.out.println(stationList);
+            }
+        }catch (HttpServerErrorException httpServerErrorException){
+            return null;
+        }
         return stationList;
     }
 }

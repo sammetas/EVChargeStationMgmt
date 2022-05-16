@@ -1,15 +1,14 @@
 package com.dzm.EVChargeStationMgmt.controller;
 
+import com.dzm.EVChargeStationMgmt.exception.NoRecordsFoundException;
 import com.dzm.EVChargeStationMgmt.model.Company;
 import com.dzm.EVChargeStationMgmt.model.Station;
-import com.dzm.EVChargeStationMgmt.service.EVCSMCompanyService;
 import com.dzm.EVChargeStationMgmt.service.EVCSMStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,13 +57,13 @@ public class EVCSMStationController {
         List<Station> list= evcsmStationService.getStations();
         if(!list.isEmpty()){
             return new ResponseEntity<>(list,HttpStatus.OK);
+        }else {
+            throw new NoRecordsFoundException("No stations found to show");
         }
-        return new ResponseEntity<List<Station>>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
+
     }
 
-
     private boolean validate(Station station) {
-
         return true;
     }
 

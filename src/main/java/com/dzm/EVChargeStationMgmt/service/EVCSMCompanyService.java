@@ -68,9 +68,14 @@ public class EVCSMCompanyService {
          int temp=companyId;
 
         while(temp !=0){
-            Company company = companyRepository.findById(temp).get();
-            map.put(company.getId(),company.getStations());
-            temp = company.getParentId();
+            Optional<Company> tCompany = companyRepository.findById(temp);
+            if(tCompany.isPresent()) {
+                Company company = tCompany.get();
+                map.put(company.getId(), company.getStations());
+                temp = company.getParentId();
+            }else{
+                temp = 0;
+            }
         }
        return map;
     }
@@ -100,4 +105,7 @@ public class EVCSMCompanyService {
             return map;
         }
 
+    public Optional<Company> getOne(int companyId) {
+        return  companyRepository.findById(companyId);
+    }
 }

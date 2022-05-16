@@ -1,6 +1,7 @@
 package com.dzm.EVChargeStationMgmt.controller;
 
 
+import com.dzm.EVChargeStationMgmt.exception.NoRecordsFoundException;
 import com.dzm.EVChargeStationMgmt.model.Company;
 import com.dzm.EVChargeStationMgmt.model.Station;
 import com.dzm.EVChargeStationMgmt.service.EVCSMCompanyService;
@@ -9,9 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -53,13 +55,24 @@ public class EVCSMCompanyController {
         return new ResponseEntity<Company>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/company/{id}")
+    public ResponseEntity<Company> getOneCompany(@PathVariable("id") int companyId){
+        Optional<Company> company= evcsmCompanyService.getOne(companyId);
+        if(company.isEmpty()){
+            throw new NoRecordsFoundException("This company not found");
+        }
+
+        return new ResponseEntity<Company>(company.get(),HttpStatus.OK);
+    }
+
     @GetMapping("/companies")
     public ResponseEntity<List<Company>> getAllCompanies(){
         List<Company> list= evcsmCompanyService.getAllCompanies();
         if(!list.isEmpty()){
             return new ResponseEntity<>(list,HttpStatus.OK);
+        }else{
+            throw  new NoRecordsFoundException("No Record(s) found.");
         }
-        return new ResponseEntity<List<Company>>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/company/stations/{companyId}")
@@ -83,5 +96,10 @@ public class EVCSMCompanyController {
              return false;
          }
              return true;
+    }
+
+    @ExceptionHandler(NoRecordsFoundException.class)
+    public ResponseEntity<Object> noRecordNotFound(HttpServletRequest req, Exception e)    {
+        return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
