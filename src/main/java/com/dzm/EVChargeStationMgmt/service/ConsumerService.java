@@ -28,16 +28,30 @@ public class ConsumerService {
  */
     public   List<Station> findStations(int radius, Point p) {
 
-        List<Station> allStations=evcsmStationRepository.findAll();
-     return    allStations.stream().filter(station ->{
+        List<Station> allStations = evcsmStationRepository.findAll();
+        allStations.forEach(station -> {
+            Point p2 = new Point(station.getLatitude(), station.getLongitude());
+            station.setRadius(calcRadius(p, p2));
+        });
+
+        List<Station> sortedStations =    allStations.stream().sorted((a, b) -> {
+            if (a.getRadius() >= b.getRadius()) return 1;
+            else return -1;
+        }).collect(Collectors.toList());
+         return sortedStations;
+
+    }
+
+     /*return    allStations.stream().filter(station ->{
             Point stationPos = new Point(station.getLatitude(),station.getLongitude());
             if(isNearStation(radius,p,stationPos)) {
                 return true;
             }
             return false;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList());*/
+     // sort
 
-    }
+   // }
     /*
      Calclulates the distance bw given point and each station point and if it fall below then true.
      Thanks to Google.
@@ -48,6 +62,13 @@ public class ConsumerService {
                         + Math.cos(p1.getX()) * Math.cos(p2.getX()) * Math.cos(p2.getY() - p1.getY()));
 
       return diffRadius<=radius;
+
+    }
+
+    private double calcRadius(Point p1,Point p2) {
+       return   6371 * Math.acos(
+                Math.sin(p1.getX()) * Math.sin(p2.getX())
+                        + Math.cos(p1.getX()) * Math.cos(p2.getX()) * Math.cos(p2.getY() - p1.getY()));
 
     }
 

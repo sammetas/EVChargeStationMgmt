@@ -22,6 +22,8 @@ public class Station {
     private double longitude;
     @Column(name = "company_id")
     private int companyId;
+    @Transient
+    private double radius;
 
 
 }
