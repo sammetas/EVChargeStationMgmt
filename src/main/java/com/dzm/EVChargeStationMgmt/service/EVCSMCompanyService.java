@@ -16,10 +16,17 @@ public class EVCSMCompanyService {
        @Autowired
     private EVCSMCompanyRepository companyRepository;
 
-    public void processAndSaveCompany(Company company) {
-        companyRepository.save(company);
-
+    public Company processAndSaveCompany(Company company) {
+     return    companyRepository.save(company);
     }
+    public boolean isCompanyExistAlready(Company company){
+        List<Company> existingCompanyList =  companyRepository.findByName(company.getName());
+        return  existingCompanyList.stream()
+                .filter(e->e.getName().equalsIgnoreCase(company.getName()) && e.getParentId()==company.getParentId())
+                .count() > 0;
+
+      }
+
 
     public boolean processAndUpdateCompany(Company company) {
         if(companyRepository.existsById(company.getId())){

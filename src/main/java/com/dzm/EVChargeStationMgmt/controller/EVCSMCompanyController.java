@@ -26,8 +26,12 @@ public class EVCSMCompanyController {
     @PostMapping("/company")
     public ResponseEntity<Company> saveCompany(@RequestBody Company company){
         if(validate(company)) {
-            evcsmCompanyService.processAndSaveCompany(company);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            if(!evcsmCompanyService.isCompanyExistAlready(company)) {
+                Company saveCompany = evcsmCompanyService.processAndSaveCompany(company);
+                return new ResponseEntity<>(saveCompany,HttpStatus.CREATED);
+            }else {
+                throw new NoRecordsFoundException("This Record already exists");
+            }
         }
         return new ResponseEntity<Company>(HttpStatus.BAD_REQUEST);
     }
@@ -91,8 +95,7 @@ public class EVCSMCompanyController {
 
 
     private boolean validate(Company company) {
-         if((company.getName().length()==0 || company.getName()==null) &&
-             company.getParentId()==0){
+         if((company.getName().length()==0 || company.getName()==null)){
              return false;
          }
              return true;

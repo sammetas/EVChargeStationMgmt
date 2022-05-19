@@ -78,6 +78,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<finalName>dzm-api-docker</finalName>
+
 	</build>
 
 </project>

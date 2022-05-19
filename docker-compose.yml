@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  API:
+     image: 'dzm-api-docker.jar'
+     ports:
+       - "8081:8081"
+     depends_on:
+       PostgreSQL:
+         condition: service_healthy
+     environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgresuser
+      - SPRING_DATASOURCE_PASSWORD=P@ss4you!
+      - SPRING_JPA_DATABASE-PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  PostgreSQL:
+    image: 'postgres'
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgresuser
+      - POSTGRES_PASSWORD=P@ss4you!
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5

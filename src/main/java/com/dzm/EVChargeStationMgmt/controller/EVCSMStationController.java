@@ -22,8 +22,12 @@ public class EVCSMStationController {
     @PostMapping("/station")
     public ResponseEntity<Station> saveCompany(@RequestBody Station station){
         if(validate(station)) {
-            evcsmStationService.processAndSaveStation(station);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            if(!evcsmStationService.isStationExistAlready(station)) {
+                evcsmStationService.processAndSaveStation(station);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            }else {
+                throw  new NoRecordsFoundException("This record exists already");
+            }
         }
         return new ResponseEntity<Station>(HttpStatus.BAD_REQUEST);
     }

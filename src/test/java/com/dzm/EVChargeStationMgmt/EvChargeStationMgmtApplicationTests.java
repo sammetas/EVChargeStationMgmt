@@ -81,14 +81,7 @@ class EvChargeStationMgmtApplicationTests {
 
 	}
 
-	@Test
-	void testCompany_StatusCreate(){
-	 	Company company1 = new Company();
-		company1.setName("A");	company1.setId(1);	company1.setParentId(0);
-		 ResponseEntity<Company> response = new ResponseEntity<>(HttpStatus.CREATED);
-		when(mock(EVCSMCompanyController.class).saveCompany(mock(Company.class))).thenReturn(new ResponseEntity<Company>(company1,HttpStatus.CREATED));
-		assertEquals(HttpStatus.CREATED,response.getStatusCode());
-	}
+
 
 
 

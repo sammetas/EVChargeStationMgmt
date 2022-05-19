@@ -20,6 +20,17 @@ public class EVCSMStationService {
         stationRepository.save(station);
     }
 
+    public boolean isStationExistAlready(Station station){
+        List<Station> existingStList =  stationRepository.findByName(station.getName());
+        return  existingStList.stream()
+                .filter(e->e.getName().equalsIgnoreCase(station.getName()) &&
+                        e.getCompanyId() == station.getCompanyId() &&
+                        e.getLatitude() == station.getLatitude() &&
+                        e.getLongitude() == station.getLongitude())
+                .count() > 0;
+
+    }
+
     public boolean processAndUpdateStation(Station station) {
 
         if(stationRepository.existsById(station.getId())){
